@@ -92,14 +92,14 @@ def run_aapl_dcf():
     # Step 3: Set up DCF assumptions
     print("Step 3: Setting up DCF assumptions...")
 
-    # Historical data
+    # Historical data (convert to millions for consistency)
     company_data = {
-        'revenue': financials['income_statement']['revenue'][:3],  # Last 3 years
-        'ebit': financials['income_statement']['ebit'][:3],
+        'revenue': [x / 1e6 if x else 0 for x in financials['income_statement']['revenue'][:3]],  # Convert to millions
+        'ebit': [x / 1e6 if x else 0 for x in financials['income_statement']['ebit'][:3]],
         'tax_rate': tax_rate,
-        'nwc': financials['balance_sheet']['nwc'][:3],
-        'capex': [abs(x) for x in financials['cash_flow']['capex'][:3]],
-        'da': financials['cash_flow']['depreciation'][:3],
+        'nwc': [x / 1e6 if x else 0 for x in financials['balance_sheet']['nwc'][:3]],
+        'capex': [abs(x) / 1e6 if x else 0 for x in financials['cash_flow']['capex'][:3]],
+        'da': [x / 1e6 if x else 0 for x in financials['cash_flow']['depreciation'][:3]],
     }
 
     # Projection assumptions
@@ -117,9 +117,9 @@ def run_aapl_dcf():
         'terminal_growth': 0.025,  # 2.5% perpetual growth
         'wacc': wacc_results['wacc'],
 
-        # Capital structure
-        'net_debt': (debt - financials['balance_sheet']['cash'][0] / 1e6),
-        'cash': financials['balance_sheet']['cash'][0] / 1e6,
+        # Capital structure (already in millions from WACC calc)
+        'net_debt': debt - (financials['balance_sheet']['cash'][0] / 1e6 if financials['balance_sheet']['cash'][0] else 0),
+        'cash': financials['balance_sheet']['cash'][0] / 1e6 if financials['balance_sheet']['cash'][0] else 0,
         'shares_outstanding': market_data['shares_outstanding'],
         'current_price': market_data.get('current_price'),
     }
@@ -139,13 +139,13 @@ def run_aapl_dcf():
     projections = dcf.project_financials()
     print("  ✓ Projected 5-year financials")
 
-    # Calculate enterprise value
+    # Calculate enterprise value (values are in millions)
     ev = dcf.calculate_enterprise_value()
-    print(f"  Enterprise Value: ${ev / 1e6:.1f}B")
+    print(f"  Enterprise Value: ${ev / 1e3:.1f}B (${ev:,.0f}M)")
 
     # Calculate equity value and price
     equity_result = dcf.calculate_equity_value()
-    print(f"  Equity Value: ${equity_result['equity_value'] / 1e6:.1f}B")
+    print(f"  Equity Value: ${equity_result['equity_value'] / 1e3:.1f}B")
     print(f"  Implied Price per Share: ${equity_result['price_per_share']:.2f}")
 
     if 'current_price' in equity_result:

@@ -15,7 +15,7 @@ Key formatting rules:
 """
 
 from openpyxl.styles import (
-    Font, PatternFill, Border, Side, Alignment, NumberFormat
+    Font, PatternFill, Border, Side, Alignment
 )
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.utils import get_column_letter

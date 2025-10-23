@@ -286,8 +286,8 @@ class DCFModel:
         # Net Debt = Debt - Cash, so EV - Net Debt = EV - Debt + Cash
         equity_value = self.enterprise_value - net_debt
 
-        # Price per share
-        price_per_share = equity_value / shares
+        # Price per share (equity_value is in millions, convert to dollars)
+        price_per_share = (equity_value * 1e6) / shares
 
         result = {
             'enterprise_value': self.enterprise_value,
