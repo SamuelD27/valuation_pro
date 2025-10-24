@@ -13,7 +13,7 @@ Run this script to see the system in action!
 from src.models.wacc import WACCCalculator
 from src.models.dcf import DCFModel
 from src.data.fetcher import DataFetcher
-from src.excel.generator import ExcelGenerator
+from src.excel.three_statement_generator import ThreeStatementGenerator
 
 
 def run_aapl_dcf():
@@ -164,16 +164,26 @@ def run_aapl_dcf():
     print()
 
     # Step 6: Generate Excel Output
-    print("Step 6: Generating Excel output...")
+    print("Step 6: Generating Excel output with FORMULAS (not values)...")
 
-    generator = ExcelGenerator(model_type='dcf')
+    generator = ThreeStatementGenerator(ticker="AAPL")
 
     output_file = "AAPL_DCF_Valuation.xlsx"
 
-    generator.create_dcf_excel(
-        dcf_model=dcf,
-        assumptions=assumptions,
+    # Prepare WACC data for generator
+    wacc_generator_data = {
+        'risk_free_rate': wacc_results['risk_free_rate'],
+        'beta': wacc_results['beta'],
+        'market_risk_premium': wacc_results['market_risk_premium'],
+        'cost_of_debt': wacc_results['cost_of_debt'],
+        'market_cap': equity,
+        'total_debt': debt,
+    }
+
+    generator.generate_full_model(
         company_data=company_data,
+        assumptions=assumptions,
+        wacc_data=wacc_generator_data,
         filepath=output_file
     )
 
