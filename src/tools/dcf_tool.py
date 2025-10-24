@@ -104,7 +104,7 @@ class DCFTool:
             ("Enterprise Value", "='DCF Valuation'!D30"),
             ("(Less): Net Debt", "='DCF Valuation'!D31"),
             ("Equity Value", "='DCF Valuation'!D32"),
-            ("Shares Outstanding (mm)", "='Assumptions'!D20"),
+            ("Shares Outstanding (mm)", "='Assumptions'!B20"),
             ("Implied Price per Share", "='DCF Valuation'!D34"),
         ]
 
@@ -281,8 +281,8 @@ class DCFTool:
         ws.cell(row=row, column=1).value = "Revenue ($mm)"
         ws.cell(row=row, column=1).font = Font(bold=True)
 
-        # Year 1: Base revenue × (1 + growth)
-        ws.cell(row=row, column=2).value = "=100*(1+Assumptions!B5)"  # Placeholder base
+        # Year 1: Last year's historical revenue × (1 + growth)
+        ws.cell(row=row, column=2).value = "='Historical Data'!F10*(1+Assumptions!B5)"  # F10 = last historical year revenue
         for year in range(2, 6):
             col_letter = get_column_letter(1 + year)
             prior_col = get_column_letter(year)

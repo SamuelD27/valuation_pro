@@ -381,7 +381,7 @@ class LBOTool:
 
         # Sponsor Equity $mm (calculated)
         ws.cell(row=row, column=1).value = "Sponsor Equity ($mm)"
-        ws.cell(row=row, column=2).value = f"='Transaction Summary'!B7*B{equity_pct_row}"
+        ws.cell(row=row, column=2).value = f"='Transaction Summary'!B7*Assumptions!B{equity_pct_row}"
         ws.cell(row=row, column=2).number_format = '$#,##0.0'
         sponsor_equity_row = row
         row += 1
@@ -416,7 +416,7 @@ class LBOTool:
         row += 1
 
         ws.cell(row=row, column=1).value = "Senior Term Loan ($mm)"
-        ws.cell(row=row, column=2).value = f"='Transaction Summary'!B7*B{senior_pct_row}"
+        ws.cell(row=row, column=2).value = f"='Transaction Summary'!B7*Assumptions!B{senior_pct_row}"
         ws.cell(row=row, column=2).number_format = '$#,##0.0'
         senior_debt_row = row
         row += 1
@@ -443,7 +443,7 @@ class LBOTool:
         row += 1
 
         ws.cell(row=row, column=1).value = "Subordinated Notes ($mm)"
-        ws.cell(row=row, column=2).value = f"='Transaction Summary'!B7*B{sub_pct_row}"
+        ws.cell(row=row, column=2).value = f"='Transaction Summary'!B7*Assumptions!B{sub_pct_row}"
         ws.cell(row=row, column=2).number_format = '$#,##0.0'
         sub_debt_row = row
         row += 1
