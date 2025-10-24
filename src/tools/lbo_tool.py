@@ -275,6 +275,7 @@ class LBOTool:
         ws.cell(row=row, column=3).number_format = '0.0%'
         ws.cell(row=row, column=3).font = Font(bold=True)
         total_uses_row = row
+        self.total_uses_row = total_uses_row  # Store for later reference
         row += 2
 
         # SOURCES header
@@ -377,17 +378,18 @@ class LBOTool:
         ws.cell(row=row, column=2).number_format = '0.0%'
         row += 1
 
-        # Sponsor Equity % (input)
-        ws.cell(row=row, column=1).value = "Sponsor Equity (% of Purchase Price)"
+        # Sponsor Equity % (input) - should be % of TOTAL USES not just EV
+        ws.cell(row=row, column=1).value = "Sponsor Equity (% of Total Uses)"
         ws.cell(row=row, column=2).value = assumptions.get('equity_contribution_pct', 0.50)
         ws.cell(row=row, column=2).fill = self.INPUT_FILL
         ws.cell(row=row, column=2).number_format = '0.0%'
         equity_pct_row = row
         row += 1
 
-        # Sponsor Equity $mm (calculated)
+        # Sponsor Equity $mm (calculated) - multiply by TOTAL USES not just Purchase EV
         ws.cell(row=row, column=1).value = "Sponsor Equity ($mm)"
-        ws.cell(row=row, column=2).value = f"=B{self.purchase_ev_row}*B{equity_pct_row}"
+        # Use total_uses_row which was stored in _add_sources_uses
+        ws.cell(row=row, column=2).value = f"=B{self.total_uses_row}*B{equity_pct_row}"
         ws.cell(row=row, column=2).number_format = '$#,##0.0'
         sponsor_equity_row = row
         row += 1
@@ -421,7 +423,7 @@ class LBOTool:
         row += 1
 
         # Senior Debt
-        ws.cell(row=row, column=1).value = "Senior Debt (% of Purchase Price)"
+        ws.cell(row=row, column=1).value = "Senior Debt (% of Total Uses)"
         ws.cell(row=row, column=2).value = assumptions.get('senior_debt_pct', 0.40)
         ws.cell(row=row, column=2).fill = self.INPUT_FILL
         ws.cell(row=row, column=2).number_format = '0.0%'
@@ -429,7 +431,7 @@ class LBOTool:
         row += 1
 
         ws.cell(row=row, column=1).value = "Senior Term Loan ($mm)"
-        ws.cell(row=row, column=2).value = f"=B{self.purchase_ev_row}*B{senior_pct_row}"
+        ws.cell(row=row, column=2).value = f"=B{self.total_uses_row}*B{senior_pct_row}"
         ws.cell(row=row, column=2).number_format = '$#,##0.0'
         senior_debt_row = row
         row += 1
@@ -450,7 +452,7 @@ class LBOTool:
         row += 1
 
         # Subordinated Debt
-        ws.cell(row=row, column=1).value = "Subordinated Debt (% of Purchase Price)"
+        ws.cell(row=row, column=1).value = "Subordinated Debt (% of Total Uses)"
         ws.cell(row=row, column=2).value = assumptions.get('subordinated_debt_pct', 0.10)
         ws.cell(row=row, column=2).fill = self.INPUT_FILL
         ws.cell(row=row, column=2).number_format = '0.0%'
@@ -458,7 +460,7 @@ class LBOTool:
         row += 1
 
         ws.cell(row=row, column=1).value = "Subordinated Notes ($mm)"
-        ws.cell(row=row, column=2).value = f"=B{self.purchase_ev_row}*B{sub_pct_row}"
+        ws.cell(row=row, column=2).value = f"=B{self.total_uses_row}*B{sub_pct_row}"
         ws.cell(row=row, column=2).number_format = '$#,##0.0'
         sub_debt_row = row
         row += 1
