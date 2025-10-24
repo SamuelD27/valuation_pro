@@ -36,18 +36,18 @@ Generate all models for a company in 30 seconds:
 # Set Python path
 export PYTHONPATH=/Users/samueldukmedjian/Desktop/valuation_pro
 
-# Generate LBO model (multi-sheet)
-python3 scripts/examples/example_lbo_tool.py
+# Generate DCF model
+python3 scripts/examples/example_dcf.py
 
-# Generate DCF model (multi-sheet)
-python3 scripts/examples/example_dcf_tool.py
-
-# Generate single-sheet models
-python3 scripts/examples/example_lbo_single_sheet.py
-python3 scripts/examples/example_dcf_single_sheet.py
+# Generate LBO model
+python3 scripts/examples/example_lbo.py
 ```
 
-**Output:** 4 Excel files in `Examples/` folder ready for analysis
+**Output:** 2 Excel files in `Examples/` folder ready for analysis
+- `DCF_Model_AcmeTech.xlsx` - Complete DCF valuation model
+- `LBO_Model_AcmeTech.xlsx` - Complete LBO analysis model
+
+**Note:** All models are now single-sheet format for easier navigation and presentation.
 
 ---
 
