@@ -31,12 +31,12 @@ class DCFModel:
 
     def __init__(self, company_data: Dict, assumptions: Dict):
         """
-        Initialize DCF Model.
+        Initialize DCF Model following Investment Banking standards.
 
         Args:
             company_data: Historical financial data
                 {
-                    'revenue': [...],  # Historical 3-5 years
+                    'revenue': [...],  # Historical 3-5 years (most recent first)
                     'ebit': [...],
                     'tax_rate': float,
                     'nwc': [...],      # Net working capital
@@ -46,20 +46,49 @@ class DCFModel:
 
             assumptions: Projection assumptions
                 {
-                    'revenue_growth': [...],  # Growth rates for projection years
-                    'ebit_margin': float,     # Target EBIT margin
-                    'tax_rate': float,
-                    'nwc_pct_revenue': float,
-                    'capex_pct_revenue': float,
-                    'terminal_growth': float,  # Must be < WACC
-                    'wacc': float,
-                    'net_debt': float,         # Current net debt
-                    'cash': float,             # Current cash
-                    'shares_outstanding': int,
+                    'revenue_growth': [...],     # Growth rates for projection years
+                    'ebit_margin': float,        # Target EBIT margin (0.0-1.0)
+                    'tax_rate': float,           # Corporate tax rate (0.0-0.5)
+                    'nwc_pct_revenue': float,    # NWC as % of revenue (typically 0.10-0.25)
+                    'capex_pct_revenue': float,  # CapEx as % of revenue (typically 0.02-0.15)
+                    'da_pct_revenue': float,     # D&A as % of revenue (optional, default 0.03)
+                    'terminal_growth': float,    # Perpetual growth rate (must be < WACC, typically 0.02-0.03)
+                    'wacc': float,               # Weighted avg cost of capital (typically 0.07-0.15)
+                    'net_debt': float,           # Current net debt (Debt - Cash) in millions
+                    'cash': float,               # Current cash (optional, for display)
+                    'shares_outstanding': int,   # Diluted shares outstanding
+                    'use_midyear_convention': bool,  # Use mid-year discounting (optional, default True)
+                    'current_price': float,      # Current stock price (optional, for upside calc)
                 }
 
         Raises:
-            ValueError: If terminal growth >= WACC or other invalid inputs
+            ValueError: If terminal growth >= WACC, tax rate invalid, or other input errors
+            UserWarning: If WACC or terminal growth outside typical ranges
+
+        Example:
+            >>> company_data = {
+            ...     'revenue': [500.0],  # $500M LTM revenue
+            ...     'nwc': [50.0],
+            ...     'ebit': [100.0],
+            ...     'tax_rate': 0.25,
+            ... }
+            >>> assumptions = {
+            ...     'revenue_growth': [0.10, 0.08, 0.06, 0.05, 0.04],  # 5-year projection
+            ...     'ebit_margin': 0.20,
+            ...     'tax_rate': 0.25,
+            ...     'nwc_pct_revenue': 0.10,
+            ...     'capex_pct_revenue': 0.03,
+            ...     'da_pct_revenue': 0.03,
+            ...     'terminal_growth': 0.025,  # 2.5% perpetual growth
+            ...     'wacc': 0.09,  # 9% WACC
+            ...     'net_debt': 200.0,  # $200M net debt
+            ...     'shares_outstanding': 100_000_000,
+            ... }
+            >>> model = DCFModel(company_data, assumptions)
+            >>> result = model.calculate_equity_value()
+
+        Reference:
+            Investment Banking Financial Modeling Guide Sections 2.1-2.9
         """
         self.company_data = company_data
         self.assumptions = assumptions
@@ -73,25 +102,69 @@ class DCFModel:
         self.equity_value_result = None
 
     def _validate_inputs(self):
-        """Validate model inputs."""
-        # Terminal growth must be less than WACC
-        if self.assumptions['terminal_growth'] >= self.assumptions['wacc']:
-            raise ValueError(
-                f"Terminal growth rate ({self.assumptions['terminal_growth']:.2%}) "
-                f"must be less than WACC ({self.assumptions['wacc']:.2%})"
+        """
+        Validate model inputs against investment banking standards.
+
+        Checks:
+        - WACC in reasonable range (5-25%)
+        - Terminal growth < WACC and in reasonable range (1-4%)
+        - Tax rate in valid range (0-50%)
+        - All rates are positive
+        - Shares outstanding is positive
+
+        Reference: Guide Sections 2.3 (WACC), 2.5 (Tax), 2.6 (Terminal Growth)
+        """
+        wacc = self.assumptions['wacc']
+        terminal_growth = self.assumptions['terminal_growth']
+        tax_rate = self.assumptions['tax_rate']
+        shares = self.assumptions['shares_outstanding']
+
+        # WACC validation
+        if wacc <= 0:
+            raise ValueError(f"WACC must be positive: {wacc:.2%}")
+
+        if wacc < 0.05 or wacc > 0.25:
+            warnings.warn(
+                f"WACC of {wacc:.2%} is outside typical range (5%-25%). "
+                f"Please verify this is correct.\n"
+                f"Typical ranges per IB standards:\n"
+                f"  - Mature companies: 7-10%\n"
+                f"  - Growth companies: 9-12%\n"
+                f"  - High-risk companies: 12-15%+",
+                UserWarning
             )
 
-        # WACC must be positive
-        if self.assumptions['wacc'] <= 0:
-            raise ValueError(f"WACC must be positive: {self.assumptions['wacc']}")
-
-        # Shares outstanding must be positive
-        if self.assumptions['shares_outstanding'] <= 0:
+        # Terminal growth validation
+        if terminal_growth >= wacc:
             raise ValueError(
-                f"Shares outstanding must be positive: {self.assumptions['shares_outstanding']}"
+                f"Terminal growth rate ({terminal_growth:.2%}) must be less than "
+                f"WACC ({wacc:.2%}). A company cannot grow faster than its cost "
+                f"of capital in perpetuity."
             )
 
-        # Revenue growth rates should match projection period
+        if terminal_growth < 0 or terminal_growth > 0.04:
+            warnings.warn(
+                f"Terminal growth rate of {terminal_growth:.2%} is outside typical "
+                f"range (1%-4%). Conservative assumption is 2-3% (long-term GDP growth).\n"
+                f"Terminal growth should not exceed long-term GDP growth + inflation.",
+                UserWarning
+            )
+
+        # Tax rate validation
+        if not 0 <= tax_rate <= 0.5:
+            raise ValueError(
+                f"Tax rate {tax_rate:.1%} is outside valid range (0%-50%).\n"
+                f"US Federal rate: 21%\n"
+                f"Typical effective rates: 23-28% (including state/local)"
+            )
+
+        # Shares outstanding validation
+        if shares <= 0:
+            raise ValueError(
+                f"Shares outstanding must be positive: {shares:,.0f}"
+            )
+
+        # Revenue growth rates validation
         if not self.assumptions['revenue_growth']:
             raise ValueError("Revenue growth rates cannot be empty")
 
@@ -103,9 +176,10 @@ class DCFModel:
         - Revenue (using growth rates)
         - EBIT (using margin assumption)
         - NOPAT (EBIT × (1 - Tax Rate))
+        - D&A (Depreciation & Amortization as % of revenue)
         - Net Working Capital
         - CapEx
-        - Free Cash Flow
+        - Free Cash Flow (FCFF = NOPAT + D&A - CapEx - ΔNWC)
 
         Returns:
             DataFrame with projected financials by year
@@ -133,6 +207,12 @@ class DCFModel:
             # Calculate NOPAT (Net Operating Profit After Tax)
             nopat = ebit * (1 - self.assumptions['tax_rate'])
 
+            # Project D&A as % of revenue
+            # Typical range: 2-5% for asset-light, 5-10% for asset-heavy
+            # Default to 3% if not specified
+            da_pct = self.assumptions.get('da_pct_revenue', 0.03)
+            da = revenue * da_pct
+
             # Project Net Working Capital as % of revenue
             nwc = revenue * self.assumptions['nwc_pct_revenue']
 
@@ -150,6 +230,7 @@ class DCFModel:
             # Calculate Free Cash Flow
             fcf = self.calculate_fcf({
                 'nopat': nopat,
+                'da': da,
                 'capex': capex,
                 'delta_nwc': delta_nwc
             })
@@ -161,6 +242,8 @@ class DCFModel:
                 'ebit': ebit,
                 'ebit_margin': ebit / revenue,
                 'nopat': nopat,
+                'da': da,
+                'da_pct_revenue': da_pct,
                 'nwc': nwc,
                 'delta_nwc': delta_nwc,
                 'capex': capex,
@@ -172,22 +255,30 @@ class DCFModel:
 
     def calculate_fcf(self, year_data: Dict) -> float:
         """
-        Calculate Free Cash Flow for a given year.
+        Calculate Free Cash Flow to Firm (FCFF) for a given year.
 
-        FCF = NOPAT - CapEx - ΔNWC
+        FCF = NOPAT + D&A - CapEx - ΔNWC
 
         Where:
             NOPAT = Net Operating Profit After Tax = EBIT × (1 - Tax Rate)
-            CapEx = Capital Expenditures
-            ΔNWC = Change in Net Working Capital
+            D&A = Depreciation & Amortization (non-cash expense, add back)
+            CapEx = Capital Expenditures (cash outflow)
+            ΔNWC = Change in Net Working Capital (increase = cash outflow)
+
+        Reference: Investment Banking Guide Section 2.2
 
         Args:
-            year_data: Dict with 'nopat', 'capex', 'delta_nwc'
+            year_data: Dict with 'nopat', 'da', 'capex', 'delta_nwc'
 
         Returns:
-            Free cash flow
+            Free cash flow to firm
+
+        Note:
+            D&A must be added back because it's a non-cash expense that was
+            already subtracted from NOPAT. This is the standard FCFF formula
+            used in investment banking.
         """
-        fcf = year_data['nopat'] - year_data['capex'] - year_data['delta_nwc']
+        fcf = year_data['nopat'] + year_data['da'] - year_data['capex'] - year_data['delta_nwc']
         return fcf
 
     def calculate_terminal_value(self, final_fcf: float) -> float:
@@ -218,7 +309,17 @@ class DCFModel:
         """
         Calculate enterprise value by discounting FCFs and terminal value.
 
-        EV = Σ(FCF_t / (1 + WACC)^t) + TV / (1 + WACC)^n
+        End-of-Year Convention:
+            EV = Σ(FCF_t / (1 + WACC)^t) + TV / (1 + WACC)^n
+
+        Mid-Year Convention (IB Standard):
+            EV = Σ(FCF_t / (1 + WACC)^(t-0.5)) + TV / (1 + WACC)^n
+
+        Mid-year convention assumes cash flows occur throughout the year
+        (not on Dec 31), which is more accurate and is the standard in
+        investment banking.
+
+        Reference: Guide Section 2.9
 
         Returns:
             Enterprise value
@@ -229,6 +330,9 @@ class DCFModel:
         wacc = self.assumptions['wacc']
         fcf_list = self.projections['fcf'].tolist()
 
+        # Check if mid-year convention should be used (default = True per IB standards)
+        use_midyear = self.assumptions.get('use_midyear_convention', True)
+
         # Calculate terminal value
         final_fcf = fcf_list[-1]
         terminal_value = self.calculate_terminal_value(final_fcf)
@@ -236,10 +340,19 @@ class DCFModel:
         # Discount each year's FCF to present value
         pv_fcf = []
         for year, fcf in enumerate(fcf_list, start=1):
-            pv = fcf / ((1 + wacc) ** year)
+            if use_midyear:
+                # Mid-year convention: Cash flows occur at midpoint of year
+                # Year 1 FCF discounted at 0.5 years, Year 2 at 1.5 years, etc.
+                discount_period = year - 0.5
+            else:
+                # End-of-year convention: Cash flows occur on Dec 31
+                discount_period = year
+
+            pv = fcf / ((1 + wacc) ** discount_period)
             pv_fcf.append(pv)
 
         # Discount terminal value to present value
+        # Terminal value is always discounted to end of final projection year
         n = len(fcf_list)
         pv_terminal = terminal_value / ((1 + wacc) ** n)
 
@@ -255,6 +368,7 @@ class DCFModel:
             'terminal_value': terminal_value,
             'pv_terminal_value': pv_terminal,
             'enterprise_value': enterprise_value,
+            'use_midyear_convention': use_midyear,
         }
 
         return enterprise_value
