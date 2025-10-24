@@ -486,7 +486,7 @@ class DCFTool:
 
         # Less: Net Debt
         ws.cell(row=row, column=1).value = "Less: Net Debt"
-        ws.cell(row=row, column=4).value = "=Assumptions!$B$20"
+        ws.cell(row=row, column=4).value = "=Assumptions!$B$21"  # B21 is Net Debt, B20 is Shares Outstanding
         ws.cell(row=row, column=4).number_format = '$#,##0.0'
 
         net_debt_row = row

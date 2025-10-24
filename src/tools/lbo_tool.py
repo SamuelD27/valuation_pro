@@ -196,7 +196,7 @@ class LBOTool:
 
         # Exit Year EBITDA
         ws.cell(row=row, column=1).value = "Exit Year EBITDA"
-        ws.cell(row=row, column=2).value = "='Operating Model'!G10"  # Year 5 EBITDA
+        ws.cell(row=row, column=2).value = "='Operating Model'!G5"  # Year 5 EBITDA (row 5, not row 10 which is taxes)
         ws.cell(row=row, column=2).number_format = '$#,##0.0,,"M"'
         exit_ebitda_row = row
         row += 1
@@ -766,7 +766,7 @@ class LBOTool:
 
         # Exit Year EBITDA
         ws.cell(row=row, column=1).value = "Exit Year EBITDA"
-        ws.cell(row=row, column=2).value = "='Operating Model'!G10"  # Year 5
+        ws.cell(row=row, column=2).value = "='Operating Model'!G5"  # Year 5 EBITDA (row 5, not row 10 which is taxes)
         ws.cell(row=row, column=2).number_format = '$#,##0.0'
         exit_ebitda_row = row
         row += 1
