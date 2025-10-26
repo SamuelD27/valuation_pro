@@ -1,0 +1,269 @@
+{
+  "company": {
+    "name": "AcmeTech Corp",
+    "ticker": "ACME",
+    "industry": "Enterprise Software",
+    "sector": "Technology",
+    "fiscal_year_end": null,
+    "description": null
+  },
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "income_statement": {
+    "revenue": [
+      100.0,
+      120.0,
+      145.0,
+      175.0,
+      210.0
+    ],
+    "cogs": [
+      30.0,
+      35.0,
+      42.0,
+      50.0,
+      60.0
+    ],
+    "gross_profit": [
+      70.0,
+      85.0,
+      103.0,
+      125.0,
+      150.0
+    ],
+    "operating_expenses": [
+      40.0,
+      45.0,
+      52.0,
+      60.0,
+      70.0
+    ],
+    "rd_expense": null,
+    "sga_expense": null,
+    "ebitda": [
+      30.0,
+      40.0,
+      51.0,
+      65.0,
+      80.0
+    ],
+    "depreciation_amortization": [
+      3.0,
+      3.5,
+      4.0,
+      5.0,
+      6.0
+    ],
+    "ebit": [
+      27.0,
+      36.5,
+      47.0,
+      60.0,
+      74.0
+    ],
+    "interest_expense": [
+      2.0,
+      1.8,
+      1.5,
+      1.2,
+      1.0
+    ],
+    "interest_income": null,
+    "other_income_expense": null,
+    "pretax_income": [
+      25.0,
+      34.7,
+      45.5,
+      58.8,
+      73.0
+    ],
+    "income_tax": [
+      6.25,
+      8.68,
+      11.38,
+      14.7,
+      18.25
+    ],
+    "net_income": [
+      18.75,
+      26.02,
+      34.12,
+      44.1,
+      54.75
+    ],
+    "eps_basic": null,
+    "eps_diluted": null
+  },
+  "balance_sheet": {
+    "cash": [
+      20.0,
+      25.0,
+      35.0,
+      50.0,
+      70.0
+    ],
+    "marketable_securities": null,
+    "accounts_receivable": [
+      15.0,
+      18.0,
+      22.0,
+      26.0,
+      31.0
+    ],
+    "inventory": null,
+    "other_current_assets": null,
+    "current_assets": [
+      50.0,
+      60.0,
+      75.0,
+      95.0,
+      120.0
+    ],
+    "ppe_gross": null,
+    "accumulated_depreciation": null,
+    "ppe_net": [
+      40.0,
+      45.0,
+      50.0,
+      60.0,
+      70.0
+    ],
+    "goodwill": null,
+    "intangible_assets": null,
+    "other_longterm_assets": null,
+    "total_assets": [
+      150.0,
+      180.0,
+      220.0,
+      270.0,
+      330.0
+    ],
+    "accounts_payable": null,
+    "accrued_expenses": null,
+    "short_term_debt": null,
+    "current_portion_longterm_debt": null,
+    "other_current_liabilities": null,
+    "current_liabilities": [
+      30.0,
+      35.0,
+      42.0,
+      50.0,
+      60.0
+    ],
+    "long_term_debt": [
+      40.0,
+      38.0,
+      35.0,
+      30.0,
+      25.0
+    ],
+    "deferred_tax_liabilities": null,
+    "other_longterm_liabilities": null,
+    "total_liabilities": [
+      80.0,
+      85.0,
+      90.0,
+      95.0,
+      100.0
+    ],
+    "common_stock": null,
+    "retained_earnings": null,
+    "accumulated_other_comprehensive_income": null,
+    "treasury_stock": null,
+    "shareholders_equity": [
+      70.0,
+      95.0,
+      130.0,
+      175.0,
+      230.0
+    ],
+    "minority_interest": null,
+    "total_equity": null
+  },
+  "cash_flow": {
+    "operating_cash_flow": [
+      25.0,
+      32.0,
+      42.0,
+      55.0,
+      70.0
+    ],
+    "depreciation_amortization": [
+      3.0,
+      3.5,
+      4.0,
+      5.0,
+      6.0
+    ],
+    "stock_based_compensation": null,
+    "change_in_accounts_receivable": null,
+    "change_in_inventory": null,
+    "change_in_accounts_payable": null,
+    "change_in_nwc": [
+      2.0,
+      3.0,
+      4.0,
+      4.0,
+      5.0
+    ],
+    "capex": [
+      8.0,
+      9.0,
+      11.0,
+      15.0,
+      18.0
+    ],
+    "acquisitions": null,
+    "asset_sales": null,
+    "investing_cash_flow": null,
+    "debt_issued": null,
+    "debt_repaid": null,
+    "equity_issued": null,
+    "equity_repurchased": null,
+    "dividends_paid": null,
+    "financing_cash_flow": null,
+    "net_change_in_cash": null,
+    "free_cash_flow": [
+      17.0,
+      23.0,
+      31.0,
+      40.0,
+      52.0
+    ],
+    "beginning_cash": null,
+    "ending_cash": null
+  },
+  "market_data": {
+    "share_price": 45.5,
+    "shares_outstanding": 50.0,
+    "shares_diluted": null,
+    "market_cap": 2275.0,
+    "total_debt": 25.0,
+    "cash_and_equivalents": 70.0,
+    "net_debt": -45.0,
+    "enterprise_value": 2230.0,
+    "pe_ratio": 41.6,
+    "ev_ebitda": 27.9,
+    "ev_revenue": null,
+    "price_to_book": null,
+    "beta": 1.25,
+    "dividend_per_share": null,
+    "dividend_yield": null
+  },
+  "metadata": {
+    "source": "manual_test",
+    "source_path": null,
+    "extraction_date": "2025-10-24T13:02:37.805118",
+    "completeness_score": 0.95,
+    "quality_flags": [],
+    "notes": "Sample data for schema testing",
+    "warnings": [],
+    "unit_conversions_applied": [],
+    "derived_fields_calculated": []
+  }
+}

@@ -1,0 +1,276 @@
+{
+  "company": {
+    "name": "Apple Inc.",
+    "ticker": "AAPL",
+    "industry": "Consumer Electronics",
+    "sector": "Technology",
+    "fiscal_year_end": null,
+    "description": null
+  },
+  "years": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "income_statement": {
+    "revenue": [
+      365.817,
+      394.32800000000003,
+      383.285,
+      391.035
+    ],
+    "cogs": [
+      212.981,
+      223.546,
+      214.137,
+      210.352
+    ],
+    "gross_profit": [
+      152.836,
+      170.782,
+      169.148,
+      180.683
+    ],
+    "operating_expenses": [
+      43.887,
+      51.345,
+      54.847,
+      57.467
+    ],
+    "rd_expense": [
+      21.914,
+      26.251,
+      29.915,
+      31.37
+    ],
+    "sga_expense": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "ebitda": [
+      123.136,
+      130.541,
+      125.82000000000001,
+      134.661
+    ],
+    "depreciation_amortization": [
+      11.284,
+      11.104000000000001,
+      11.519,
+      11.445
+    ],
+    "ebit": [
+      111.852,
+      119.437,
+      114.301,
+      123.21600000000001
+    ],
+    "interest_expense": [
+      2.645,
+      2.931,
+      3.9330000000000003,
+      null
+    ],
+    "interest_income": null,
+    "other_income_expense": null,
+    "pretax_income": [
+      109.20700000000001,
+      119.10300000000001,
+      113.736,
+      123.485
+    ],
+    "income_tax": [
+      14.527000000000001,
+      19.3,
+      16.741,
+      29.749000000000002
+    ],
+    "net_income": [
+      94.68,
+      99.803,
+      96.995,
+      93.736
+    ],
+    "eps_basic": null,
+    "eps_diluted": null
+  },
+  "balance_sheet": {
+    "cash": [
+      34.94,
+      23.646,
+      29.965,
+      29.943
+    ],
+    "marketable_securities": null,
+    "accounts_receivable": [
+      26.278000000000002,
+      28.184,
+      29.508,
+      33.410000000000004
+    ],
+    "inventory": [
+      6.58,
+      4.946,
+      6.331,
+      7.2860000000000005
+    ],
+    "other_current_assets": null,
+    "current_assets": [
+      134.836,
+      135.405,
+      143.566,
+      152.987
+    ],
+    "ppe_gross": null,
+    "accumulated_depreciation": null,
+    "ppe_net": [
+      49.527,
+      42.117,
+      43.715,
+      45.68
+    ],
+    "goodwill": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "intangible_assets": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "other_longterm_assets": null,
+    "total_assets": [
+      351.002,
+      352.755,
+      352.583,
+      364.98
+    ],
+    "accounts_payable": [
+      54.763,
+      64.115,
+      62.611000000000004,
+      68.96000000000001
+    ],
+    "accrued_expenses": null,
+    "short_term_debt": [
+      15.613,
+      21.11,
+      15.807,
+      20.879
+    ],
+    "current_portion_longterm_debt": null,
+    "other_current_liabilities": null,
+    "current_liabilities": [
+      125.48100000000001,
+      153.982,
+      145.308,
+      176.392
+    ],
+    "long_term_debt": [
+      109.10600000000001,
+      98.959,
+      95.281,
+      85.75
+    ],
+    "deferred_tax_liabilities": null,
+    "other_longterm_liabilities": null,
+    "total_liabilities": [
+      287.912,
+      302.083,
+      290.437,
+      308.03000000000003
+    ],
+    "common_stock": null,
+    "retained_earnings": null,
+    "accumulated_other_comprehensive_income": null,
+    "treasury_stock": null,
+    "shareholders_equity": [
+      63.09,
+      50.672000000000004,
+      62.146,
+      56.95
+    ],
+    "minority_interest": null,
+    "total_equity": null
+  },
+  "cash_flow": {
+    "operating_cash_flow": [
+      104.038,
+      122.151,
+      110.543,
+      118.254
+    ],
+    "depreciation_amortization": [
+      11.284,
+      11.104000000000001,
+      11.519,
+      11.445
+    ],
+    "stock_based_compensation": null,
+    "change_in_accounts_receivable": null,
+    "change_in_inventory": null,
+    "change_in_accounts_payable": null,
+    "change_in_nwc": null,
+    "capex": [
+      -11.085,
+      -10.708,
+      -10.959,
+      -9.447000000000001
+    ],
+    "acquisitions": null,
+    "asset_sales": null,
+    "investing_cash_flow": null,
+    "debt_issued": null,
+    "debt_repaid": null,
+    "equity_issued": null,
+    "equity_repurchased": null,
+    "dividends_paid": null,
+    "financing_cash_flow": null,
+    "net_change_in_cash": null,
+    "free_cash_flow": [
+      92.953,
+      111.443,
+      99.584,
+      108.807
+    ],
+    "beginning_cash": null,
+    "ending_cash": null
+  },
+  "market_data": {
+    "share_price": 259.58,
+    "shares_outstanding": 14840.39,
+    "shares_diluted": null,
+    "market_cap": 3852.2682081280004,
+    "total_debt": 101.69800294400001,
+    "cash_and_equivalents": 55.37200128,
+    "net_debt": 46.32600166400001,
+    "enterprise_value": 3898.594557952,
+    "pe_ratio": 39.38998,
+    "ev_ebitda": null,
+    "ev_revenue": null,
+    "price_to_book": null,
+    "beta": 1.094,
+    "dividend_per_share": null,
+    "dividend_yield": 0.4
+  },
+  "metadata": {
+    "source": "api_yfinance",
+    "source_path": "yfinance://AAPL",
+    "extraction_date": "2025-10-24T14:21:45.567077",
+    "completeness_score": 0.9818181818181818,
+    "quality_flags": [],
+    "notes": "Fetched from Yahoo Finance via yfinance library",
+    "warnings": [],
+    "unit_conversions_applied": [
+      "converted_from_thousands_to_millions",
+      "normalized_to_millions"
+    ],
+    "derived_fields_calculated": []
+  }
+}
