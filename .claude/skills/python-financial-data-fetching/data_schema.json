@@ -1,0 +1,346 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FinancialData",
+  "description": "Standardized financial data schema for ValuationPro",
+  "type": "object",
+  "required": ["ticker", "company_name", "fiscal_year_end", "income_statement", "balance_sheet", "cash_flow", "market_data", "data_quality"],
+  "properties": {
+    "ticker": {
+      "type": "string",
+      "description": "Stock ticker symbol (uppercase)",
+      "pattern": "^[A-Z]{1,5}$",
+      "examples": ["AAPL", "MSFT", "GOOGL"]
+    },
+    "company_name": {
+      "type": "string",
+      "description": "Full legal company name",
+      "minLength": 1,
+      "examples": ["Apple Inc.", "Microsoft Corporation"]
+    },
+    "fiscal_year_end": {
+      "type": "string",
+      "description": "Fiscal year end month or date (MM-DD)",
+      "pattern": "^(January|February|March|April|May|June|July|August|September|October|November|December|[0-1][0-9]-[0-3][0-9])$",
+      "examples": ["December", "September", "09-30"]
+    },
+    "income_statement": {
+      "type": "object",
+      "description": "Income statement data (5 years, most recent first)",
+      "properties": {
+        "revenue": {
+          "type": "array",
+          "description": "Total revenue",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          },
+          "minItems": 1,
+          "maxItems": 10
+        },
+        "cogs": {
+          "type": "array",
+          "description": "Cost of goods sold / Cost of revenue",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "gross_profit": {
+          "type": "array",
+          "description": "Gross profit (Revenue - COGS)",
+          "items": {
+            "type": ["number", "null"]
+          }
+        },
+        "operating_expenses": {
+          "type": "array",
+          "description": "Total operating expenses",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "operating_income": {
+          "type": "array",
+          "description": "Operating income (EBIT)",
+          "items": {
+            "type": ["number", "null"]
+          }
+        },
+        "interest_expense": {
+          "type": "array",
+          "description": "Interest expense",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "tax_expense": {
+          "type": "array",
+          "description": "Income tax expense",
+          "items": {
+            "type": ["number", "null"]
+          }
+        },
+        "net_income": {
+          "type": "array",
+          "description": "Net income (bottom line)",
+          "items": {
+            "type": ["number", "null"]
+          }
+        },
+        "ebitda": {
+          "type": "array",
+          "description": "Earnings before interest, tax, depreciation & amortization",
+          "items": {
+            "type": ["number", "null"]
+          }
+        },
+        "ebit": {
+          "type": "array",
+          "description": "Earnings before interest & tax",
+          "items": {
+            "type": ["number", "null"]
+          }
+        }
+      }
+    },
+    "balance_sheet": {
+      "type": "object",
+      "description": "Balance sheet data (5 years, most recent first)",
+      "properties": {
+        "total_assets": {
+          "type": "array",
+          "description": "Total assets",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          },
+          "minItems": 1
+        },
+        "current_assets": {
+          "type": "array",
+          "description": "Current assets (< 1 year)",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "cash": {
+          "type": "array",
+          "description": "Cash and cash equivalents",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "accounts_receivable": {
+          "type": "array",
+          "description": "Accounts receivable (net)",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "inventory": {
+          "type": "array",
+          "description": "Inventory",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "total_liabilities": {
+          "type": "array",
+          "description": "Total liabilities",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          },
+          "minItems": 1
+        },
+        "current_liabilities": {
+          "type": "array",
+          "description": "Current liabilities (< 1 year)",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "total_debt": {
+          "type": "array",
+          "description": "Total debt (short-term + long-term)",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "long_term_debt": {
+          "type": "array",
+          "description": "Long-term debt (> 1 year)",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "short_term_debt": {
+          "type": "array",
+          "description": "Short-term debt (< 1 year)",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "accounts_payable": {
+          "type": "array",
+          "description": "Accounts payable",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "total_equity": {
+          "type": "array",
+          "description": "Total shareholders' equity",
+          "items": {
+            "type": ["number", "null"]
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "cash_flow": {
+      "type": "object",
+      "description": "Cash flow statement data (5 years, most recent first)",
+      "properties": {
+        "operating_cash_flow": {
+          "type": "array",
+          "description": "Cash flow from operating activities",
+          "items": {
+            "type": ["number", "null"]
+          },
+          "minItems": 1
+        },
+        "investing_cash_flow": {
+          "type": "array",
+          "description": "Cash flow from investing activities",
+          "items": {
+            "type": ["number", "null"]
+          }
+        },
+        "financing_cash_flow": {
+          "type": "array",
+          "description": "Cash flow from financing activities",
+          "items": {
+            "type": ["number", "null"]
+          }
+        },
+        "free_cash_flow": {
+          "type": "array",
+          "description": "Free cash flow (OCF - CapEx)",
+          "items": {
+            "type": ["number", "null"]
+          }
+        },
+        "capex": {
+          "type": "array",
+          "description": "Capital expenditures (positive value)",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "dividends_paid": {
+          "type": "array",
+          "description": "Dividends paid (positive value)",
+          "items": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "market_data": {
+      "type": "object",
+      "description": "Point-in-time market data",
+      "properties": {
+        "market_cap": {
+          "type": ["number", "null"],
+          "description": "Market capitalization",
+          "minimum": 0
+        },
+        "shares_outstanding": {
+          "type": ["number", "null"],
+          "description": "Shares outstanding",
+          "minimum": 0
+        },
+        "current_price": {
+          "type": ["number", "null"],
+          "description": "Current stock price",
+          "minimum": 0
+        },
+        "beta": {
+          "type": ["number", "null"],
+          "description": "Beta (market correlation)",
+          "minimum": -3.0,
+          "maximum": 3.0
+        },
+        "52_week_high": {
+          "type": ["number", "null"],
+          "description": "52-week high price",
+          "minimum": 0
+        },
+        "52_week_low": {
+          "type": ["number", "null"],
+          "description": "52-week low price",
+          "minimum": 0
+        },
+        "avg_volume": {
+          "type": ["number", "null"],
+          "description": "Average trading volume",
+          "minimum": 0
+        },
+        "enterprise_value": {
+          "type": ["number", "null"],
+          "description": "Enterprise value (market cap + debt - cash)"
+        },
+        "trailing_pe": {
+          "type": ["number", "null"],
+          "description": "Trailing P/E ratio",
+          "minimum": 0
+        },
+        "forward_pe": {
+          "type": ["number", "null"],
+          "description": "Forward P/E ratio",
+          "minimum": 0
+        }
+      }
+    },
+    "data_quality": {
+      "type": "object",
+      "description": "Data quality metadata",
+      "required": ["source", "fetch_timestamp", "completeness_score"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Data source used",
+          "enum": ["yfinance", "alpha_vantage", "sec_edgar", "multiple"]
+        },
+        "fetch_timestamp": {
+          "type": "string",
+          "description": "ISO timestamp of data fetch",
+          "format": "date-time"
+        },
+        "completeness_score": {
+          "type": "string",
+          "description": "Data completeness assessment",
+          "pattern": "^(High|Medium|Low).*$"
+        },
+        "warnings": {
+          "type": "string",
+          "description": "Comma-separated list of warnings"
+        }
+      }
+    }
+  }
+}

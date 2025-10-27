@@ -137,11 +137,11 @@ def test_sheet_linkage(sample_data, tmp_path):
 
     # Test Income Statement references Debt Schedule for interest
     is_sheet = wb['Income Statement']
-    interest_cell = is_sheet['D26']  # Interest expense
+    interest_cell = is_sheet['D25']  # Interest expense (row 25, not 26)
 
     if interest_cell.value and isinstance(interest_cell.value, str) and interest_cell.value.startswith('='):
         assert "'Debt Schedule'!" in interest_cell.value or "Debt Schedule!" in interest_cell.value, \
-            f"Interest should reference Debt Schedule"
+            f"Interest should reference Debt Schedule, got: {interest_cell.value}"
 
     print("✓ Sheets are properly linked with cross-references")
 
@@ -230,7 +230,7 @@ def test_no_hardcoded_calculated_values(sample_data, tmp_path):
     assert fcf_cell.value.startswith('='), "FCF should be formula"
 
     # Enterprise Value should be formula
-    ev_cell = dcf_sheet['D34']
+    ev_cell = dcf_sheet['D26']  # Enterprise Value is at row 26, not 34
 
     assert ev_cell.value is not None, "Enterprise Value is empty"
     assert isinstance(ev_cell.value, str), f"Enterprise Value should be formula"
@@ -257,16 +257,16 @@ def test_wacc_calculation_formulas(sample_data, tmp_path):
     wacc_sheet = wb['WACC']
 
     # Cost of Equity should be formula (CAPM)
-    re_cell = wacc_sheet['C9']  # Cost of Equity
+    re_cell = wacc_sheet['B8']  # Cost of Equity is at B8, not C9
 
     assert re_cell.value is not None, "Cost of Equity is empty"
     assert isinstance(re_cell.value, str), "Cost of Equity should be formula"
     assert re_cell.value.startswith('='), "Cost of Equity should be formula"
     # Should reference risk-free rate, beta, and MRP
-    assert 'C' in re_cell.value, "Should reference input cells"
+    assert 'B' in re_cell.value, "Should reference input cells"
 
     # After-tax cost of debt should be formula
-    rd_after_tax_cell = wacc_sheet['C15']
+    rd_after_tax_cell = wacc_sheet['B13']  # After-tax Rd location
 
     assert rd_after_tax_cell.value is not None, "After-tax Rd is empty"
     assert isinstance(rd_after_tax_cell.value, str), "After-tax Rd should be formula"
@@ -274,7 +274,7 @@ def test_wacc_calculation_formulas(sample_data, tmp_path):
         "Should have tax shield formula"
 
     # WACC itself should be formula
-    wacc_cell = wacc_sheet['C20']
+    wacc_cell = wacc_sheet['B23']  # WACC cell location
 
     assert wacc_cell.value is not None, "WACC is empty"
     assert isinstance(wacc_cell.value, str), "WACC should be formula"

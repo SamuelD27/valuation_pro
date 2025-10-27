@@ -40,11 +40,12 @@ env/
 htmlcov/
 *.log
 
-# Excel outputs
+# Excel outputs (except examples)
 *.xlsx
 *.xls
 !docs/*.xlsx
-!examples/*.xlsx
+!Ref_models/*.xlsx
+!Base_datasource/*.xlsx
 
 # Environment variables
 .env
@@ -63,3 +64,18 @@ htmlcov/
 *credentials*
 *secrets*
 config/api_keys.py
+
+# Temporary files
+test_*.json
+sample_*.json
+temp_*.py
+*.tmp
+
+# Documentation build
+docs/_build/
+docs/.doctrees/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride

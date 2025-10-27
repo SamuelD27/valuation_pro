@@ -38,5 +38,36 @@ setup(
             "black>=23.0.0",
             "flake8>=6.0.0",
         ],
+        "ml": [
+            "scikit-learn>=1.3.0",
+            "xgboost>=2.0.0",
+            "tensorflow>=2.13.0",  # For LSTM models
+            "prophet>=1.1.0",  # For time series forecasting
+        ],
+        "llm": [
+            "anthropic>=0.18.0",  # Claude API
+            "pypdf>=3.0.0",  # PDF processing
+            "tiktoken>=0.5.0",  # Token counting
+        ],
+        "viz": [
+            "matplotlib>=3.7.0",
+            "seaborn>=0.12.0",
+            "plotly>=5.14.0",
+            "streamlit>=1.28.0",  # Interactive dashboards
+        ],
+        "all": [
+            # All optional dependencies
+            "scikit-learn>=1.3.0",
+            "xgboost>=2.0.0",
+            "tensorflow>=2.13.0",
+            "prophet>=1.1.0",
+            "anthropic>=0.18.0",
+            "pypdf>=3.0.0",
+            "tiktoken>=0.5.0",
+            "matplotlib>=3.7.0",
+            "seaborn>=0.12.0",
+            "plotly>=5.14.0",
+            "streamlit>=1.28.0",
+        ],
     },
 )

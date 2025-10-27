@@ -107,10 +107,12 @@ class TestDCFModel:
 
         ebit = year_1['ebit']
         nopat = ebit * (1 - standard_assumptions['tax_rate'])
+        da = year_1['da']  # D&A needs to be added back
         capex = year_1['capex']
         nwc_change = year_1['delta_nwc']
 
-        expected_fcf = nopat - capex - nwc_change
+        # FCF = NOPAT + D&A - CapEx - ΔNWC (D&A is added back since it's non-cash)
+        expected_fcf = nopat + da - capex - nwc_change
         actual_fcf = year_1['fcf']
 
         assert abs(actual_fcf - expected_fcf) < 10  # Within $10M tolerance
